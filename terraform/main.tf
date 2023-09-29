@@ -7,7 +7,8 @@ resource "google_compute_instance" "vm" {
   zone         = each.value.zone
   hostname     = "${each.key}-${each.value.zone}.asx.com.au"
 
-  # Create Disk and Network Interface to run "terraform validate" (Based on Terraform Docs: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance#example-usage)
+  # Create Disk and Network Interface so it is possible to run "terraform validate"
+  # - (Based on Terraform Docs: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_instance#example-usage)
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
@@ -25,18 +26,14 @@ resource "google_compute_instance" "vm" {
     }
   }
 
-
-
-
-
-  # the code section "dynamic"  is looping the var "service_account" declarated in the input.tf file/
+  # the code section "dynamic"  is looping the var "service_account" declarated in the input.tf file
   # if the "service_account" is not null/empty the dynamic will create 1 resource, if not (if empty/null) the resource will not be created
-  # if the resource is to be created, its content will have
-  # an email from the variable "service_account" in the input.tf
-  # a scope from the variable "scopes" in the input.tf
+  # if the resource is to be created, its content will have:
+  # - an email from the variable "service_account" in the input.tf
+  # - a scope from the variable "scopes" in the input.tf
 
-  # homework: research and explain the use of dynamic in terraform to act as an if/else condition using the for_each operator/function
-  # pros: keep a cleaner code and make it easier to read
+  # The use of dynamic has benefits itself as in creating resources dinamically and conditionally.
+  # - When its operation is combined with for_each, it is enhanced by the use of a list of conditions, provides reduced amount of code and make it easier to maintain.
 
   dynamic "service_account" {
     for_each = var.service_account != "" ? [1] : []
