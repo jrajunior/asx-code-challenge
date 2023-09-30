@@ -26,7 +26,7 @@ logger.info(f"Filtering public vms")
 public_vm_list = {}
 for vm_key, vm_value in vm_list.items():
     if vm_value["private"] == False:
-        logger.debug(f"{vm_key} is public. Removing from list")
+        logger.debug(f"{vm_key} is public. Adding to the list of public VMs")
         public_vm_list[vm_key] = vm_value
 
 logging.debug(public_vm_list)
